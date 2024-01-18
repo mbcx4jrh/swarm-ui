@@ -21,5 +21,9 @@ RUN bash ./dotnet-install.sh --channel 7.0
 
 RUN cd ..
 
+#copy local Settings.fds to the container
+COPY ./Settings.fds ./StableSwarmUI/Data/Settings.fds
+
+
 #launch the UI when the container starts
 CMD ["bash", "./StableSwarmUI/launch-linux.sh"]
