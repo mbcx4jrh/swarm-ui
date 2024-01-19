@@ -7,10 +7,10 @@ RUN apt-get update && apt-get upgrade -y
 RUN apt-get install -y bash git python3 pip
 RUN apt-get install -y libicu-dev
 
-
+WORKDIR /app
 RUN git clone https://github.com/Stability-AI/StableSwarmUI
 
-RUN cd StableSwarmUI/launchtools
+WORKDIR /app/StableSwarmUI/launchtools
 
 RUN apt-get install -y wget
 RUN wget https://dot.net/v1/dotnet-install.sh -O dotnet-install.sh
@@ -22,11 +22,13 @@ RUN bash ./dotnet-install.sh --channel 7.0
 #leave until then, as it doubles the image size
 #RUN bash ./dotnet-install.sh --channel 8.0
 
-RUN cd ..
+WORKDIR /app/StableSwarmUI/dlbackend
+RUN git clone https://github.com/comfyanonymous/ComfyUI
+
 
 #copy local Settings.fds to the container
-COPY ./Settings.fds ./StableSwarmUI/Data/Settings.fds
+COPY ./Settings.fds /app/StableSwarmUI/Data/Settings.fds
 
 
 #launch the UI when the container starts
-ENTRYPOINT ["./StableSwarmUI/launch-linux.sh"]
+ENTRYPOINT ["/app/StableSwarmUI/launch-linux.sh"]
