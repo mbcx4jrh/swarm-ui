@@ -29,4 +29,4 @@ COPY ./Settings.fds ./StableSwarmUI/Data/Settings.fds
 
 
 #launch the UI when the container starts
-CMD ["bash", "./StableSwarmUI/launch-linux.sh"]
+ENTRYPOINT ["bash", "./StableSwarmUI/launch-linux.sh"]
