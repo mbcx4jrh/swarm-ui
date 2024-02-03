@@ -1,7 +1,7 @@
-FROM nvidia/cuda:12.3.1-runtime-ubuntu22.04
+FROM nvidia/cuda:12.1.0-runtime-ubuntu22.04
 
 # update and upgrade
-RUN apt-get update && apt-get upgrade -y
+RUN apt-get update
 
 #install python3, pip and venv
 RUN apt-get install -y bash git python3 pip
@@ -22,13 +22,16 @@ RUN bash ./dotnet-install.sh --channel 7.0
 #leave until then, as it doubles the image size
 #RUN bash ./dotnet-install.sh --channel 8.0
 
-WORKDIR /app/StableSwarmUI/dlbackend
-RUN git clone https://github.com/comfyanonymous/ComfyUI
+
+RUN apt-get install python3-venv -y
+
+WORKDIR /app/StableSwarmUI
+RUN bash ./launchtools/comfy-install-linux.sh
 
 
 #copy local Settings.fds to the container
 COPY ./Settings.fds /app/StableSwarmUI/Data/Settings.fds
-
+COPY ./Backends.fds /app/StableSwarmUI/Data/Backends.fds
 
 #launch the UI when the container starts
 ENTRYPOINT ["/app/StableSwarmUI/launch-linux.sh"]
